@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Covid19</title>
+    <link rel="stylesheet" href="/style/main.css">
+    <link rel="stylesheet" href="/style/utilities.css">
+</head>
+
+<body>
+    <h1>Some name</h1>
+    <nav class="continents">
+        <button class="africa">Africa</button>
+        <button class="americas">USA</button>
+        <button class="asia">Asia</button>
+        <button class="europe">Europe</button>
+        <button class="oceania">Oceania</button>
+    </nav>
+    <nav class="continent-data-type">
+        <button class="confirmed">Confirmed Cases</button>
+        <button class="critical">Critically Ill</button>
+        <button class="deaths">Deaths</button>
+        <button class="recovered">Recovered Cases</button>
+    </nav>
+    <main class="display-none">
+        <div class="chart">
+            <div class="chart-container">
+                <canvas id="myChart"></canvas>
+            </div>
+        </div>
+        <aside>
+            <div class="countries-of-continent">
+
+            </div>
+        </aside>
+    </main>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+    <script src="/script/app.js"></script>
+    
+</body>
+
+</html>
