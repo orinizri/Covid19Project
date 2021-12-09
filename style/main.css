@@ -47,11 +47,11 @@ main {
     flex-direction: row;
     justify-content: space-between;
     width: 90%;
-    border: 1px solid fuchsia;
-    max-height: 75vmin;
+    /* border: 1px solid fuchsia; */
+    max-height: 70vmin;
 }
 aside {
-    border:1px solid blue;
+    /* border:1px solid blue; */
     width: 20%;
     overflow: scroll;
     overflow-x: hidden;
@@ -61,20 +61,18 @@ aside {
     position: relative;
 }
 .chart {
-    border: 1px solid black;
+    /* border: 1px solid black; */
     width: 80%;
 }
 .countries-of-continent {
-    margin-top: 2.9rem;
-    border:2px solid red;
-    
-
+    margin-top: 0.9rem;
+    /* border:2px solid red; */
     width: 100%;
 }
 .countries-of-continent li {
     /* margin: 5px; */
     padding: 1rem 0px;
-    border:1px solid black;
+    /* border:1px solid black; */
     text-align: center;
     text-overflow: ellipsis;
 }

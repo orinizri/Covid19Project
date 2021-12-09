@@ -4,6 +4,10 @@ const myChart = new Chart(ctx, {
     data: {
         labels: [],
         datasets: [{
+            barPercentage: 1,
+            barThickness: 10,
+            maxBarThickness: 15,
+            minBarLength: 2,
             label: '',
             data: [],
             backgroundColor: [
@@ -28,14 +32,14 @@ const myChart = new Chart(ctx, {
     options: {
         scales: {
             y: {
-                // beginAtZero: true,
+                beginAtZero: true,
                 display: 'auto',
                 grid: {
                     display	: 'auto'
                 }
             },
             x: {
-                // beginAtZero: true,
+                beginAtZero: true,
                 display: 'auto',
                 grid: {
                     display	: 'auto'
@@ -58,7 +62,8 @@ const mainContent = document.querySelector("main")
 
 
 const countriesOfContinent = [];
-const CountryCoronaData = []
+const countriesPromises = [];
+let countriesData = [];
 
 async function getCoronaByCountryCode(countryCode) {
     let data = await (await fetch(`https://intense-mesa-62220.herokuapp.com/https://corona-api.com/countries/${countryCode}`)).json()
@@ -77,23 +82,30 @@ async function getCoronaByCountryCode(countryCode) {
 // getCoronaByCountryCode("AF")
 async function getCoronaByContinent(countriesOfContinent) {
     countriesOfContinent.forEach((countryInContinent) => {
-        CountryCoronaData.push(getCoronaByCountryCode(countryInContinent.code))
+        countriesPromises.push(getCoronaByCountryCode(countryInContinent.code))
     });
-    return prepareContinentChartByChoice(CountryCoronaData);
+    return prepareCountriesLabels(countriesPromises);
 }
-async function prepareContinentChartByChoice(preparedCountriesData) {
+async function prepareCountriesLabels(preparedCountriesData, dataType='none') {
+    console.log(typeof dataType)
     Promise.all(preparedCountriesData).then((CountriesArray) =>{
-        console.log(CountriesArray)
+        // console.log(CountriesArray)
         // console.log(myChart.data.datasets.data, myChart.data.datasets.label)
         // myChart.data.labels = [];
         // myChart.data.datasets.data = [];
+        if (dataType !== 'none') {
+            myChart.data.datasets[0].data = [];
+            CountriesArray.forEach(country => {
+                myChart.data.datasets[0].data.push(country[dataType])
+            })
+        }
         CountriesArray.forEach(country => {
             myChart.data.labels.push(country.name)
-            // myChart.data.datasets.data.push()
         });
         myChart.update();
-    } )
+    })
 }
+
 
 async function getRegion(continent) {
     let data = await (await fetch(`https://intense-mesa-62220.herokuapp.com/https://restcountries.herokuapp.com/api/v1/region/${continent}`)).json()
@@ -108,23 +120,30 @@ async function getRegion(continent) {
     return getCoronaByContinent(countriesOfContinent);
 }
 async function addCountriesOfContinent(countriesOfContinentArray) {
-    console.log(countriesOfContinentArray)
-    console.log(asideCountries)
     asideCountries.innerHTML = ''
     const listOfCountries = document.createElement('ul');
     for (let i = 0; i < countriesOfContinentArray.length; i++) {
         listOfCountries.innerHTML += `<li>${countriesOfContinentArray[i].name}</li>`;
     }
-    console.log(listOfCountries)
     asideCountries.appendChild(listOfCountries);
 }
 
+const dataTypeNav = document.querySelector(".continent-data-type")
 continentsButtons.forEach(button => {
     button.addEventListener("click", () => {
         console.log("click")
-        mainContent.classList.toggle("display-none")
+        if (dataTypeNav.classList[1] === "display-none"){
+            dataTypeNav.classList.toggle("display-none")
+        }
         getRegion(button.classList.value)
         
     })
 });
+continentsDataTypeButtons.forEach(button => {
+    button.addEventListener("click", (e) => {
+        // console.log(e.target.className)
+        mainContent.classList.toggle("display-none")
+        prepareCountriesLabels(countriesPromises,e.target.className)
+    })
+})
 
