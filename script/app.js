@@ -53,7 +53,7 @@ const myChart = new Chart(ctx, {
 const continents = document.querySelector(".continents");
 const continentsButtons = document.querySelectorAll(".continents button");
 const continentsDataTypeButtons = document.querySelectorAll(".continent-data-type button");
-const asideCountries = document.querySelectorAll(".countries-of-continent");
+const asideCountries = document.querySelector(".countries-of-continent");
 const mainContent = document.querySelector("main")
 
 
@@ -103,18 +103,19 @@ async function getRegion(continent) {
             code: country.cca2,
         })
     });
+    
     addCountriesOfContinent(countriesOfContinent)
     return getCoronaByContinent(countriesOfContinent);
 }
-function addCountriesOfContinent(countriesOfContinentArray) {
+async function addCountriesOfContinent(countriesOfContinentArray) {
+    console.log(countriesOfContinentArray)
+    console.log(asideCountries)
     asideCountries.innerHTML = ''
     const listOfCountries = document.createElement('ul');
     for (let i = 0; i < countriesOfContinentArray.length; i++) {
         listOfCountries.innerHTML += `<li>${countriesOfContinentArray[i].name}</li>`;
-
-
     }
-    // console.log(listOfCountries.innerHTML)
+    console.log(listOfCountries)
     asideCountries.appendChild(listOfCountries);
 }
 
