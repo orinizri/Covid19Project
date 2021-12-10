@@ -10,14 +10,14 @@ const myChart = new Chart(ctx, {
             minBarLength: 2,
             label: '',
             data: [],
-            backgroundColor:'rgba(255, 99, 132, 0.5)' ,
+            backgroundColor: 'rgba(255, 99, 132, 0.5)',
             borderColor:
                 'rgba(255, 99, 132, 1)'
-                // 'rgba(54, 162, 235, 1)',
-                // 'rgba(255, 206, 86, 1)',
-                // 'rgba(75, 192, 192, 1)',
-                // 'rgba(153, 102, 255, 1)',
-                // 'rgba(255, 159, 64, 1)',
+            // 'rgba(54, 162, 235, 1)',
+            // 'rgba(255, 206, 86, 1)',
+            // 'rgba(75, 192, 192, 1)',
+            // 'rgba(153, 102, 255, 1)',
+            // 'rgba(255, 159, 64, 1)',
             ,
             borderWidth: 1,
             color: 'rgba(255,255,255,1)',
@@ -45,15 +45,15 @@ const myChart = new Chart(ctx, {
                 beginAtZero: true,
                 display: 'auto',
                 grid: {
-                    display	: 'auto'
+                    display: 'auto'
                 }
             },
             x: {
                 beginAtZero: true,
                 display: 'auto',
                 grid: {
-                    display	: 'auto',
-                    color : "lightgray",
+                    display: 'auto',
+                    color: "lightgray",
 
                 }
             },
@@ -73,6 +73,7 @@ const asideCountries = document.querySelector(".countries-of-continent");
 const mainContent = document.querySelector("main")
 const sideBarCountries = document.querySelector("aside");
 
+
 let countriesOfContinent = [];
 let countriesPromises = [];
 let countriesData = [];
@@ -86,11 +87,11 @@ async function getCoronaByCountryCode(countryCode) {
     // console.log(countriesOfContinent.length)
     // console.log(data)
     return {
-        name : data.data.name,
-        code : data.data.code,
-        confirmed: data.data.latest_data.confirmed, 
-        critical : data.data.latest_data.critical,
-        death : data.data.latest_data.death,
+        name: data.data.name,
+        code: data.data.code,
+        confirmed: data.data.latest_data.confirmed,
+        critical: data.data.latest_data.critical,
+        death: data.data.latest_data.death,
         recovered: data.data.latest_data.recovered,
         confirmedToday: data.data.today.confirmed,
         deathToday: data.data.today.deathToday,
@@ -106,9 +107,9 @@ function getCoronaByContinent(countriesOfContinent) {
     return prepareDataToChart(countriesPromises);
 }
 // Data and Labels are pushed when continent and data type are selected
-async function prepareDataToChart(preparedCountriesData, dataType='none') {
+async function prepareDataToChart(preparedCountriesData, dataType = 'none') {
     // console.log(preparedCountriesData)
-    Promise.all(preparedCountriesData).then((CountriesArray) =>{
+    Promise.all(preparedCountriesData).then((CountriesArray) => {
         console.log(CountriesArray)
         if (dataType !== 'none') {
             myChart.data.datasets[0].data = [];
@@ -131,13 +132,13 @@ async function getRegion(continent) {
     countriesOfContinent = []
     let data = await (await fetch(`https://intense-mesa-62220.herokuapp.com/https://restcountries.herokuapp.com/api/v1/region/${continent}`)).json()
     data.forEach(country => {
-        
+
         countriesOfContinent.push({
             name: country.name.common,
             code: country.cca2,
         })
     });
-    
+
     addCountriesOfContinent(countriesOfContinent)
     return getCoronaByContinent(countriesOfContinent);
 }
@@ -146,11 +147,11 @@ async function addCountriesOfContinent(countriesOfContinentArray) {
     const listOfCountries = document.createElement('ul');
     for (let i = 0; i < countriesOfContinentArray.length; i++) {
         if (countriesOfContinentArray[i].name !== "Kosovo") {
-        listOfCountries.innerHTML += `<li>${countriesOfContinentArray[i].name}</li>`
+            listOfCountries.innerHTML += `<li>${countriesOfContinentArray[i].name}</li>`
         }
     }
     asideCountries.appendChild(listOfCountries);
-    
+
 }
 
 const dataTypeNav = document.querySelector(".continent-data-type")
@@ -179,7 +180,7 @@ continentsButtons.forEach(button => {
             mainContent.dataset.see = "display-none";
         }
         getRegion(button.classList.value)
-        
+
     })
 });
 
@@ -197,20 +198,36 @@ continentsDataTypeButtons.forEach(button => {
             e.target.dataset["chosen"] = true;
 
         }
-        prepareDataToChart(countriesPromises,e.target.className)
+        prepareDataToChart(countriesPromises, e.target.className)
     })
 })
-
+let InfoBox = document.createElement("div");
 sideBarCountries.addEventListener("mouseover", (e) => {
+    InfoBox.classList.remove("fade-out")
+    InfoBox.innerHTML = '';
     console.dir(e.path[0].textContent)
-    let countryInfo = countriesData.filter( (country) => {
-        return (country.name ==  e.path[0].textContent)
+    let countryInfo = countriesData.filter((country) => {
+        return (country.name == e.path[0].textContent)
     })
-    console.log(countryInfo)
-    let InfoBox = document.createElement("div");
-    InfoBox.classList.add('country-info');
-    mainContent.appendChild(InfoBox)
-    setTimeout(function() {
-        InfoBox.classList.remove = "country-info";
-    }, 500);
+    if (countryInfo.length > 0) {
+        InfoBox.innerHTML += `<p>`
+        Object.entries(countryInfo[0]).forEach((element) => {
+            if (!element[1]) {
+                element[1] = "0";
+            }
+            InfoBox.innerHTML += `${element[0]} : ${element[1]}</br>`
+        })
+        InfoBox.innerHTML += `</p>`
+        InfoBox.classList.add('country-info');
+        mainContent.appendChild(InfoBox)
+    }
+})
+
+sideBarCountries.addEventListener("mouseout", (e) => {
+    if (e.path[0].tagName === "LI") {
+        mainContent.lastChild.classList.add("fade-out")
+        
+        // mainContent.lastChild.innerHTML = '';
+        
+    }
 })

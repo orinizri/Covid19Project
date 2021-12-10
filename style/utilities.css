@@ -1,36 +1,81 @@
-nav[data-see = 'display-none'], 
-main[data-see = 'display-none'] {
+nav[data-see='display-none'],
+main[data-see='display-none'] {
     display: none;
     border: 1px solid red;
 }
-nav[data-see = 'display'], 
-main[data-see = 'display'] {
+
+nav[data-see='display'],
+main[data-see='display'] {
     display: visible;
 }
-button[data-chosen = 'true'] {
+
+button[data-chosen='true'] {
     background-color: #969ea7;
     color: rgb(247, 242, 242);
     border: 1px solid transparent;
     /* border:1px solid red; */
 }
-button[data-chosen = 'true']:hover {
+
+button[data-chosen='true']:hover {
     background-color: rgb(145, 151, 156);
 }
+
 :root {
     --background-color: #505458;
-    --gray-color5 :#343d46;
-    --gray-color4 :#4f5b66	;
-    --gray-color3 :#65737e;
-    --gray-color2 :#a7adba;
-    --gray-color1 :#c0c5ce;
+    --gray-color5: #343d46;
+    --gray-color4: #4f5b66;
+    --gray-color3: #65737e;
+    --gray-color2: #a7adba;
+    --gray-color1: #c0c5ce;
 }
+
 ::-webkit-scrollbar {
-    width: 0;  /* Remove scrollbar space */
-    background: transparent;  /* Optional: just make scrollbar invisible */
+    width: 0;
+    /* Remove scrollbar space */
+    background: transparent;
+    /* Optional: just make scrollbar invisible */
 }
+
 .country-info {
-    height: 100px;
-    width: 100px;
-    background-color: red;
+    /* height: 100px; */
+    width: 25%;
+    background-color: var(--gray-color2);
     position: absolute;
+    left:0;
+    top:0;
+    padding: 5px;
+
+}
+.country-info p {
+    
+    text-overflow: ellipsis;
+}
+
+.fade-out {
+    animation: fadeOut 2s;
+    opacity: 0;
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+.fade-in {
+    animation: fadeIn 2s;
+    opacity: 1;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }

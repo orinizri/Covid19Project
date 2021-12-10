@@ -53,6 +53,7 @@ main {
     width: 90%;
     /* border: 1px solid fuchsia; */
     max-height: 70vmin;
+    position: relative;
 }
 aside {
     /* border:1px solid blue; */
@@ -62,7 +63,6 @@ aside {
     display: flex;
     justify-content: center;
     align-items: center;
-    position: relative;
 }
 .chart {
     /* border: 1px solid black; */
@@ -111,6 +111,5 @@ aside {
     }
     .countries-of-continent li {
         width:100%;
-        
     }
 }
