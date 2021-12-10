@@ -71,7 +71,7 @@ const continentsButtons = document.querySelectorAll(".continents button");
 const continentsDataTypeButtons = document.querySelectorAll(".continent-data-type button");
 const asideCountries = document.querySelector(".countries-of-continent");
 const mainContent = document.querySelector("main")
-const countryOfContinent = asideCountries.firstChild.children;
+const sideBarCountries = document.querySelector("aside");
 
 let countriesOfContinent = [];
 let countriesPromises = [];
@@ -116,12 +116,12 @@ async function prepareDataToChart(preparedCountriesData, dataType='none') {
             myChart.data.labels = [];
             CountriesArray.forEach(country => {
                 if (country) {
+                    countriesData.push(country)
                     myChart.data.datasets[0].data.push(country[dataType])
                     myChart.data.labels.push(country.name)
                 }
             })
             myChart.update();
-            hoverCountries();
         }
     })
 }
@@ -183,28 +183,6 @@ continentsButtons.forEach(button => {
     })
 });
 
-
-function hoverCountries () {
-    if (countryOfContinent) {
-        console.log(countryOfContinent)
-        countryOfContinent.forEach(country => {
-            country.addEventListener("click", (e) => {
-                console.log(e.path[0]);
-            })
-        });
-    }
-}
-
-
-
-
-
-
-
-
-
-
-
 continentsDataTypeButtons.forEach(button => {
     button.addEventListener("click", (e) => {
         if (mainContent.dataset.see === "display-none") {
@@ -223,3 +201,10 @@ continentsDataTypeButtons.forEach(button => {
     })
 })
 
+sideBarCountries.addEventListener("mouseover", (e) => {
+    console.dir(e.path[0].textContent)
+    let countryInfo = countriesData.filter( (country) => {
+        return (country.name ==  e.path[0].textContent)
+    })
+    console.log(countryInfo)
+})
