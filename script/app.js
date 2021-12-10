@@ -67,14 +67,18 @@ const asideCountries = document.querySelector(".countries-of-continent");
 const mainContent = document.querySelector("main")
 
 
-const countriesOfContinent = [];
-const countriesPromises = [];
+let countriesOfContinent = [];
+let countriesPromises = [];
 let countriesData = [];
 
 async function getCoronaByCountryCode(countryCode) {
+    if (countryCode === 'XK') {
+        return;
+    }
     let data = await (await fetch(`https://intense-mesa-62220.herokuapp.com/https://corona-api.com/countries/${countryCode}`)).json()
     // console.log(data.data)
     // console.log(countriesOfContinent.length)
+    
     return {
         name : data.data.name,
         code : data.data.code,
@@ -86,7 +90,8 @@ async function getCoronaByCountryCode(countryCode) {
 }
 
 // getCoronaByCountryCode("AF")
-async function getCoronaByContinent(countriesOfContinent) {
+function getCoronaByContinent(countriesOfContinent) {
+    countriesPromises = [];
     countriesOfContinent.forEach((countryInContinent) => {
         countriesPromises.push(getCoronaByCountryCode(countryInContinent.code))
     });
@@ -94,15 +99,17 @@ async function getCoronaByContinent(countriesOfContinent) {
 }
 // Data and Labels are pushed when continent and data type are selected
 async function prepareDataToChart(preparedCountriesData, dataType='none') {
-    // console.log(preparedCountriesData)
+    console.log(preparedCountriesData)
     Promise.all(preparedCountriesData).then((CountriesArray) =>{
-        // console.log(CountriesArray)
+        console.log(CountriesArray)
         if (dataType !== 'none') {
             myChart.data.datasets[0].data = [];
             myChart.data.labels = [];
             CountriesArray.forEach(country => {
-                myChart.data.datasets[0].data.push(country[dataType])
-                myChart.data.labels.push(country.name)
+                if (country) {
+                    myChart.data.datasets[0].data.push(country[dataType])
+                    myChart.data.labels.push(country.name)
+                }
             })
             myChart.update();
         }
@@ -111,8 +118,10 @@ async function prepareDataToChart(preparedCountriesData, dataType='none') {
 
 
 async function getRegion(continent) {
+    countriesOfContinent = []
     let data = await (await fetch(`https://intense-mesa-62220.herokuapp.com/https://restcountries.herokuapp.com/api/v1/region/${continent}`)).json()
     data.forEach(country => {
+        
         countriesOfContinent.push({
             name: country.name.common,
             code: country.cca2,
@@ -126,7 +135,9 @@ async function addCountriesOfContinent(countriesOfContinentArray) {
     asideCountries.innerHTML = ''
     const listOfCountries = document.createElement('ul');
     for (let i = 0; i < countriesOfContinentArray.length; i++) {
-        listOfCountries.innerHTML += `<li>${countriesOfContinentArray[i].name}</li>`;
+        if (countriesOfContinentArray[i].name !== "Kosovo") {
+        listOfCountries.innerHTML += `<li>${countriesOfContinentArray[i].name}</li>`
+        }
     }
     asideCountries.appendChild(listOfCountries);
 }
@@ -134,16 +145,27 @@ async function addCountriesOfContinent(countriesOfContinentArray) {
 const dataTypeNav = document.querySelector(".continent-data-type")
 continentsButtons.forEach(button => {
     button.addEventListener("click", (e) => {
-        console.dir(e.target)
-        if (dataTypeNav.classList[1] || dataTypeNav.classList[0] === "display-none"){
-            console.log(dataTypeNav)
-            dataTypeNav.classList.toggle("display-none")
-            e.target.dataset["chosen"] = true;
-            console.log(e.target)
+        console.dir(dataTypeNav)
+        if (dataTypeNav.dataset.see === "display-none") {
+            console.log(e)
+            console.log(e.target.dataset)
+
+            e.target.dataset.chosen = true;
+            dataTypeNav.dataset.see = "display"
         } else {
-            console.log(dataTypeNav)
-            dataTypeNav.classList.toggle("display-none")
-            mainContent.classList.toggle("display-none")
+            asideCountries.innerHTML = ''
+            console.log(e)
+            for (let button of continentsButtons) {
+                button.dataset.chosen = false;
+            }
+            for (let button of continentsDataTypeButtons) {
+                button.dataset.chosen = false;
+            }
+            e.path[0].dataset.chosen = true;
+            console.log("you already chose")
+            console.log(button)
+            console.log(e.target)
+            mainContent.dataset.see = "display-none";
         }
         getRegion(button.classList.value)
         
@@ -151,15 +173,17 @@ continentsButtons.forEach(button => {
 });
 continentsDataTypeButtons.forEach(button => {
     button.addEventListener("click", (e) => {
-        if (mainContent.classList[0] === "display-none") {
+        if (mainContent.dataset.see === "display-none") {
             console.log(mainContent)
             console.dir(e.target)
             e.target.dataset["chosen"] = true;
-            mainContent.classList.toggle("display-none")
-            // button.classList.toggle(".chosen")
+            mainContent.dataset.see = "display"
         } else {
-            e.target.dataset["chosen"] = false;
-            mainContent.classList.toggle("display-none")
+            for (let button of continentsDataTypeButtons) {
+                button.dataset.chosen = false;
+            }
+            e.target.dataset["chosen"] = true;
+
         }
         prepareDataToChart(countriesPromises,e.target.className)
     })
