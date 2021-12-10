@@ -7,7 +7,8 @@
     border-style: none;
     list-style: none;
     background-color: var(--gray-color5);
-    box-sizing: border-box;
+    /* box-sizing: border-box; */
+    overflow: visible;
 }
 body {
     display: flex;
@@ -50,7 +51,7 @@ main {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    width: 90%;
+    width: 100%;
     /* border: 1px solid fuchsia; */
     max-height: 70vmin;
     position: relative;
@@ -58,27 +59,34 @@ main {
 aside {
     /* border:1px solid blue; */
     width: 20%;
-    overflow: scroll;
-    overflow-x: hidden;
+    
+    /* overflow: scroll; */
+    /* overflow-x: hidden; */
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow-x: auto;
+    overflow-y: auto;
+    position: relative
 }
 .chart {
     /* border: 1px solid black; */
     width: 80%;
 }
 .countries-of-continent {
-    margin-top: 0.9rem;
+    /* margin-top: 0.9rem; */
     /* border:2px solid red; */
     width: 100%;
+    top:0;
+    /* overflow: scroll; */
+    position:absolute;
 }
 .countries-of-continent li {
     /* margin: 5px; */
-    padding: 0.5rem 0px;
+    /* padding: 0.5rem 0px; */
     /* border:1px solid black; */
     text-align: center;
-    text-overflow: ellipsis;
+    /* text-overflow: ellipsis; */
     cursor: pointer;
 }
 .countries-of-continent li:hover {
