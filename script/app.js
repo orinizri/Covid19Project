@@ -12,7 +12,7 @@ const myChart = new Chart(ctx, {
             data: [],
             backgroundColor: 'rgba(255, 99, 132, 0.5)',
             borderColor:
-                'rgba(255, 99, 132, 1)'
+                'rgba(252, 27, 76, 0.5)'
             // 'rgba(54, 162, 235, 1)',
             // 'rgba(255, 206, 86, 1)',
             // 'rgba(75, 192, 192, 1)',
@@ -91,7 +91,7 @@ async function getCoronaByCountryCode(countryCode) {
         code: data.data.code,
         confirmed: data.data.latest_data.confirmed,
         critical: data.data.latest_data.critical,
-        death: data.data.latest_data.death,
+        death: data.data.latest_data.deaths,
         recovered: data.data.latest_data.recovered,
         confirmedToday: data.data.today.confirmed,
         deathToday: data.data.today.deathToday,
@@ -215,11 +215,13 @@ sideBarCountries.addEventListener("mouseover", (e) => {
             if (!element[1]) {
                 element[1] = "0";
             }
-            InfoBox.innerHTML += `${element[0]} : ${element[1]}</br>`
+            InfoBox.innerHTML += `<span>${element[0]}</span> : ${element[1]}</br>`
         })
         InfoBox.innerHTML += `</p>`
         InfoBox.classList.add('country-info');
         mainContent.appendChild(InfoBox)
+    } else {
+        InfoBox.innerHTML += `<p>No Information</p>`
     }
 })
 

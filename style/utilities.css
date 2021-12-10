@@ -35,20 +35,26 @@ button[data-chosen='true']:hover {
 }
 
 .country-info {
-    /* height: 100px; */
-    width: 25%;
+    width: 20%;
     background-color: var(--gray-color2);
     position: absolute;
-    left:0;
-    top:0;
-    padding: 5px;
-
-}
-.country-info p {
+    left:30%;
+    top:5%;
+    padding: 1rem 3rem;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 500;
     
-    text-overflow: ellipsis;
 }
 
+.country-info > span {
+    background-color: var(--gray-color2);
+    font-weight: 600;
+}
+.country-info > p {
+    background-color: var(--gray-color2);
+    font-weight: 400;
+}
 .fade-out {
     animation: fadeOut 2s;
     opacity: 0;
