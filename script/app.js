@@ -31,6 +31,12 @@ const myChart = new Chart(ctx, {
     },
     options: {
         scales: {
+            xAxes: [{
+                ticks: {
+                    fontSize: 8,
+                    autoSkip: false
+                }
+            }],
             y: {
                 beginAtZero: true,
                 display: 'auto',
@@ -95,13 +101,12 @@ async function prepareCountriesLabels(preparedCountriesData, dataType='none') {
         // myChart.data.datasets.data = [];
         if (dataType !== 'none') {
             myChart.data.datasets[0].data = [];
+            myChart.data.labels = [];
             CountriesArray.forEach(country => {
                 myChart.data.datasets[0].data.push(country[dataType])
+                myChart.data.labels.push(country.name)
             })
         }
-        CountriesArray.forEach(country => {
-            myChart.data.labels.push(country.name)
-        });
         myChart.update();
     })
 }
