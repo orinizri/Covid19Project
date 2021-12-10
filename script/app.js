@@ -207,4 +207,10 @@ sideBarCountries.addEventListener("mouseover", (e) => {
         return (country.name ==  e.path[0].textContent)
     })
     console.log(countryInfo)
+    let InfoBox = document.createElement("div");
+    InfoBox.classList.add('country-info');
+    mainContent.appendChild(InfoBox)
+    setTimeout(function() {
+        InfoBox.classList.remove = "country-info";
+    }, 500);
 })

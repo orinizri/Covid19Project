@@ -28,3 +28,9 @@ button[data-chosen = 'true']:hover {
     width: 0;  /* Remove scrollbar space */
     background: transparent;  /* Optional: just make scrollbar invisible */
 }
+.country-info {
+    height: 100px;
+    width: 100px;
+    background-color: red;
+    position: absolute;
+}
