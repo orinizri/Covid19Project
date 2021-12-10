@@ -1,3 +1,11 @@
 .display-none {
     display: none;
 }
+button[data-chosen = 'true'] {
+    background-color: #969ea7;
+    color: rgb(247, 242, 242);
+    /* border:1px solid red; */
+}
+button[data-chosen = 'true']:hover {
+    background-color: rgb(145, 151, 156);
+}

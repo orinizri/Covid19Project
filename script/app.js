@@ -90,15 +90,13 @@ async function getCoronaByContinent(countriesOfContinent) {
     countriesOfContinent.forEach((countryInContinent) => {
         countriesPromises.push(getCoronaByCountryCode(countryInContinent.code))
     });
-    return prepareCountriesLabels(countriesPromises);
+    return prepareDataToChart(countriesPromises);
 }
-async function prepareCountriesLabels(preparedCountriesData, dataType='none') {
-    console.log(typeof dataType)
+// Data and Labels are pushed when continent and data type are selected
+async function prepareDataToChart(preparedCountriesData, dataType='none') {
+    // console.log(preparedCountriesData)
     Promise.all(preparedCountriesData).then((CountriesArray) =>{
         // console.log(CountriesArray)
-        // console.log(myChart.data.datasets.data, myChart.data.datasets.label)
-        // myChart.data.labels = [];
-        // myChart.data.datasets.data = [];
         if (dataType !== 'none') {
             myChart.data.datasets[0].data = [];
             myChart.data.labels = [];
@@ -106,8 +104,8 @@ async function prepareCountriesLabels(preparedCountriesData, dataType='none') {
                 myChart.data.datasets[0].data.push(country[dataType])
                 myChart.data.labels.push(country.name)
             })
+            myChart.update();
         }
-        myChart.update();
     })
 }
 
@@ -135,10 +133,17 @@ async function addCountriesOfContinent(countriesOfContinentArray) {
 
 const dataTypeNav = document.querySelector(".continent-data-type")
 continentsButtons.forEach(button => {
-    button.addEventListener("click", () => {
-        console.log("click")
-        if (dataTypeNav.classList[1] === "display-none"){
+    button.addEventListener("click", (e) => {
+        console.dir(e.target)
+        if (dataTypeNav.classList[1] || dataTypeNav.classList[0] === "display-none"){
+            console.log(dataTypeNav)
             dataTypeNav.classList.toggle("display-none")
+            e.target.dataset["chosen"] = true;
+            console.log(e.target)
+        } else {
+            console.log(dataTypeNav)
+            dataTypeNav.classList.toggle("display-none")
+            mainContent.classList.toggle("display-none")
         }
         getRegion(button.classList.value)
         
@@ -146,9 +151,17 @@ continentsButtons.forEach(button => {
 });
 continentsDataTypeButtons.forEach(button => {
     button.addEventListener("click", (e) => {
-        // console.log(e.target.className)
-        mainContent.classList.toggle("display-none")
-        prepareCountriesLabels(countriesPromises,e.target.className)
+        if (mainContent.classList[0] === "display-none") {
+            console.log(mainContent)
+            console.dir(e.target)
+            e.target.dataset["chosen"] = true;
+            mainContent.classList.toggle("display-none")
+            // button.classList.toggle(".chosen")
+        } else {
+            e.target.dataset["chosen"] = false;
+            mainContent.classList.toggle("display-none")
+        }
+        prepareDataToChart(countriesPromises,e.target.className)
     })
 })
 

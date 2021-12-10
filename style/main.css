@@ -5,9 +5,10 @@
     text-decoration: none;
     border-style: none;
     list-style: none;
+    background-color: var(--background-color);
 }
 :root {
-    --background-color: #24292F;
+    --background-color: #505458;
 }
 ::-webkit-scrollbar {
     width: 0;  /* Remove scrollbar space */
