@@ -16,3 +16,15 @@ button[data-chosen = 'true'] {
 button[data-chosen = 'true']:hover {
     background-color: rgb(145, 151, 156);
 }
+:root {
+    --background-color: #505458;
+    --gray-color5 :#343d46;
+    --gray-color4 :#4f5b66	;
+    --gray-color3 :#65737e;
+    --gray-color2 :#a7adba;
+    --gray-color1 :#c0c5ce;
+}
+::-webkit-scrollbar {
+    width: 0;  /* Remove scrollbar space */
+    background: transparent;  /* Optional: just make scrollbar invisible */
+}

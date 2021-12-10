@@ -10,31 +10,35 @@ const myChart = new Chart(ctx, {
             minBarLength: 2,
             label: '',
             data: [],
-            backgroundColor: [
-                // 'rgba(255, 99, 132, 0.2)',
-                // 'rgba(54, 162, 235, 0.2)',
-                // 'rgba(255, 206, 86, 0.2)',
-                // 'rgba(75, 192, 192, 0.2)',
-                // 'rgba(153, 102, 255, 0.2)',
-                // 'rgba(255, 159, 64, 0.2)',
-            ],
-            borderColor: [
-                // 'rgba(255, 99, 132, 1)',
+            backgroundColor:'rgba(255, 99, 132, 0.5)' ,
+            borderColor:
+                'rgba(255, 99, 132, 1)'
                 // 'rgba(54, 162, 235, 1)',
                 // 'rgba(255, 206, 86, 1)',
                 // 'rgba(75, 192, 192, 1)',
                 // 'rgba(153, 102, 255, 1)',
                 // 'rgba(255, 159, 64, 1)',
-            ],
-            borderWidth: 1
+            ,
+            borderWidth: 1,
+            color: 'rgba(255,255,255,1)',
         }]
     },
     options: {
         scales: {
             xAxes: [{
                 ticks: {
-                    fontSize: 8,
-                    autoSkip: false
+                    fontSize: 9,
+                    autoSkip: false,
+                    fontColor: "white",
+                    weight: 100,
+                }
+            }],
+            yAxes: [{
+                ticks: {
+                    fontSize: 12,
+                    autoSkip: true,
+                    fontColor: "white",
+                    weight: 100,
                 }
             }],
             y: {
@@ -48,7 +52,9 @@ const myChart = new Chart(ctx, {
                 beginAtZero: true,
                 display: 'auto',
                 grid: {
-                    display	: 'auto'
+                    display	: 'auto',
+                    color : "lightgray",
+
                 }
             },
         }
@@ -65,7 +71,7 @@ const continentsButtons = document.querySelectorAll(".continents button");
 const continentsDataTypeButtons = document.querySelectorAll(".continent-data-type button");
 const asideCountries = document.querySelector(".countries-of-continent");
 const mainContent = document.querySelector("main")
-
+const countryOfContinent = asideCountries.firstChild.children;
 
 let countriesOfContinent = [];
 let countriesPromises = [];
@@ -78,14 +84,16 @@ async function getCoronaByCountryCode(countryCode) {
     let data = await (await fetch(`https://intense-mesa-62220.herokuapp.com/https://corona-api.com/countries/${countryCode}`)).json()
     // console.log(data.data)
     // console.log(countriesOfContinent.length)
-    
+    // console.log(data)
     return {
         name : data.data.name,
         code : data.data.code,
         confirmed: data.data.latest_data.confirmed, 
         critical : data.data.latest_data.critical,
-        deaths : data.data.latest_data.deaths,
+        death : data.data.latest_data.death,
         recovered: data.data.latest_data.recovered,
+        confirmedToday: data.data.today.confirmed,
+        deathToday: data.data.today.deathToday,
     }
 }
 
@@ -99,11 +107,12 @@ function getCoronaByContinent(countriesOfContinent) {
 }
 // Data and Labels are pushed when continent and data type are selected
 async function prepareDataToChart(preparedCountriesData, dataType='none') {
-    console.log(preparedCountriesData)
+    // console.log(preparedCountriesData)
     Promise.all(preparedCountriesData).then((CountriesArray) =>{
         console.log(CountriesArray)
         if (dataType !== 'none') {
             myChart.data.datasets[0].data = [];
+            myChart.data.datasets[0].label = `Number of ${dataType[0].toUpperCase()}${dataType.slice(1)} Cases Per Country`;
             myChart.data.labels = [];
             CountriesArray.forEach(country => {
                 if (country) {
@@ -112,6 +121,7 @@ async function prepareDataToChart(preparedCountriesData, dataType='none') {
                 }
             })
             myChart.update();
+            hoverCountries();
         }
     })
 }
@@ -140,6 +150,7 @@ async function addCountriesOfContinent(countriesOfContinentArray) {
         }
     }
     asideCountries.appendChild(listOfCountries);
+    
 }
 
 const dataTypeNav = document.querySelector(".continent-data-type")
@@ -171,6 +182,29 @@ continentsButtons.forEach(button => {
         
     })
 });
+
+
+function hoverCountries () {
+    if (countryOfContinent) {
+        console.log(countryOfContinent)
+        countryOfContinent.forEach(country => {
+            country.addEventListener("click", (e) => {
+                console.log(e.path[0]);
+            })
+        });
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
 continentsDataTypeButtons.forEach(button => {
     button.addEventListener("click", (e) => {
         if (mainContent.dataset.see === "display-none") {
