@@ -13,11 +13,6 @@ const myChart = new Chart(ctx, {
             backgroundColor: 'rgba(255, 99, 132, 0.5)',
             borderColor:
                 'rgba(252, 27, 76, 0.5)'
-            // 'rgba(54, 162, 235, 1)',
-            // 'rgba(255, 206, 86, 1)',
-            // 'rgba(75, 192, 192, 1)',
-            // 'rgba(153, 102, 255, 1)',
-            // 'rgba(255, 159, 64, 1)',
             ,
             borderWidth: 1,
             color: 'rgba(255,255,255,1)',
@@ -208,8 +203,13 @@ sideBarCountries.addEventListener("mouseover", (e) => {
         Object.entries(countryInfo[0]).forEach((element) => {
             if (!element[1]) {
                 element[1] = "0";
+            } 
+            if (element[0].indexOf('confirmedToday') !== (-1)) {
+                console.log("yay")
+                element[0] = 'New Cases';
+            } else if (element[0].indexOf('deathToday') !== (-1)) {
+                element[0] = 'New Deaths';
             }
-            // ${element[0][0].toUpperCase()}${element[0].slice(1)}
             InfoBox.innerHTML += `<span>${element[0][0].toUpperCase()}${element[0].slice(1)}</span>: ${element[1]}</br>`;
         })
         InfoBox.innerHTML += `</p>`;
