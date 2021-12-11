@@ -64,6 +64,7 @@ const myChart = new Chart(ctx, {
 
 const continents = document.querySelector(".continents");
 const continentsButtons = document.querySelectorAll(".continents button");
+const continentsContainers = document.querySelectorAll(".countinent-container");
 const continentsDataTypeButtons = document.querySelectorAll(".continent-data-type button");
 const asideCountries = document.querySelector(".countries-of-continent");
 const mainContent = document.querySelector("main")
@@ -157,24 +158,27 @@ async function addCountriesOfContinent(countriesOfContinentArray) {
 }
 
 const dataTypeNav = document.querySelector(".continent-data-type")
-continentsButtons.forEach(button => {
-    button.addEventListener("click", (e) => {
+continentsContainers.forEach(container => {
+    container.addEventListener("click", (e) => {
         console.dir(dataTypeNav)
         if (dataTypeNav.dataset.see === "display-none") {
+            console.dir(e.target)
             e.target.dataset.chosen = true;
             dataTypeNav.dataset.see = "display";
         } else {
             asideCountries.innerHTML = '';
-            for (let button of continentsButtons) {
-                button.dataset.chosen = false;
+            for (let container of continentsContainers) {
+                console.log(container)
+                container.children[1].dataset.chosen = false;
             }
-            for (let button of continentsDataTypeButtons) {
-                button.dataset.chosen = false;
+            for (let container of continentsDataTypeButtons) {
+                container.dataset.chosen = false;
             }
             e.path[0].dataset.chosen = true;
             mainContent.dataset.see = "display-none";
         }
-        getRegion(button.classList.value)
+        console.log(container.classList[0])
+        getRegion(container.classList[0])
     })
 });
 
