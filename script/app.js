@@ -83,9 +83,7 @@ async function getCoronaByCountryCode(countryCode) {
         return;
     }
     let data = await (await fetch(`https://intense-mesa-62220.herokuapp.com/https://corona-api.com/countries/${countryCode}`)).json()
-    // console.log(data.data)
-    // console.log(countriesOfContinent.length)
-    // console.log(data)
+
     return {
         name: data.data.name,
         code: data.data.code,
@@ -97,9 +95,14 @@ async function getCoronaByCountryCode(countryCode) {
         deathToday: data.data.today.deathToday,
     }
 }
-
+const loaderContainerDiv = document.createElement("div");
+const loaderDiv = document.createElement("div");
 // getCoronaByCountryCode("AF")
 function getCoronaByContinent(countriesOfContinent) {
+    loaderDiv.classList.add("loader");
+    loaderContainerDiv.classList.add("loader-container");
+    loaderContainerDiv.appendChild(loaderDiv);
+    mainContent.appendChild(loaderContainerDiv);
     countriesPromises = [];
     countriesOfContinent.forEach((countryInContinent) => {
         countriesPromises.push(getCoronaByCountryCode(countryInContinent.code))
@@ -110,7 +113,8 @@ function getCoronaByContinent(countriesOfContinent) {
 async function prepareDataToChart(preparedCountriesData, dataType = 'none') {
     // console.log(preparedCountriesData)
     Promise.all(preparedCountriesData).then((CountriesArray) => {
-        console.log(CountriesArray)
+        loaderDiv.classList.remove("loader");
+        //
         if (dataType !== 'none') {
             myChart.data.datasets[0].data = [];
             myChart.data.datasets[0].label = `Number of ${dataType[0].toUpperCase()}${dataType.slice(1)} Cases Per Country`;
@@ -159,9 +163,6 @@ continentsButtons.forEach(button => {
     button.addEventListener("click", (e) => {
         console.dir(dataTypeNav)
         if (dataTypeNav.dataset.see === "display-none") {
-            console.log(e)
-            console.log(e.target.dataset)
-
             e.target.dataset.chosen = true;
             dataTypeNav.dataset.see = "display"
         } else {
@@ -174,9 +175,6 @@ continentsButtons.forEach(button => {
                 button.dataset.chosen = false;
             }
             e.path[0].dataset.chosen = true;
-            console.log("you already chose")
-            console.log(button)
-            console.log(e.target)
             mainContent.dataset.see = "display-none";
         }
         getRegion(button.classList.value)
