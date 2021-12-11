@@ -61,11 +61,7 @@ const myChart = new Chart(ctx, {
     }
 });
 
-// calculated: {death_rate: 4.643301788812984, recovery_rate: 79.68507086228139, recovered_vs_death_ratio: null, cases_per_million_population: 1124}
-// confirmed: 155019
-// critical: 24294
-// deaths: 7198
-// recovered: 123527
+
 const continents = document.querySelector(".continents");
 const continentsButtons = document.querySelectorAll(".continents button");
 const continentsDataTypeButtons = document.querySelectorAll(".continent-data-type button");
@@ -82,7 +78,7 @@ async function getCoronaByCountryCode(countryCode) {
     if (countryCode === 'XK') {
         return;
     }
-    let data = await (await fetch(`https://intense-mesa-62220.herokuapp.com/https://corona-api.com/countries/${countryCode}`)).json()
+    let data = await (await fetch(`https://intense-mesa-62220.herokuapp.com/https://corona-api.com/countries/${countryCode}`)).json();
 
     return {
         name: data.data.name,
@@ -95,35 +91,38 @@ async function getCoronaByCountryCode(countryCode) {
         deathToday: data.data.today.deathToday,
     }
 }
+
+// getCoronaByCountryCode("AF")
+
 const loaderContainerDiv = document.createElement("div");
 const loaderDiv = document.createElement("div");
-// getCoronaByCountryCode("AF")
+
+
 function getCoronaByContinent(countriesOfContinent) {
+    
     loaderDiv.classList.add("loader");
     loaderContainerDiv.classList.add("loader-container");
     loaderContainerDiv.appendChild(loaderDiv);
     mainContent.appendChild(loaderContainerDiv);
     countriesPromises = [];
     countriesOfContinent.forEach((countryInContinent) => {
-        countriesPromises.push(getCoronaByCountryCode(countryInContinent.code))
+        countriesPromises.push(getCoronaByCountryCode(countryInContinent.code));
     });
     return prepareDataToChart(countriesPromises);
 }
 // Data and Labels are pushed when continent and data type are selected
 async function prepareDataToChart(preparedCountriesData, dataType = 'none') {
-    // console.log(preparedCountriesData)
     Promise.all(preparedCountriesData).then((CountriesArray) => {
         loaderDiv.classList.remove("loader");
-        //
         if (dataType !== 'none') {
             myChart.data.datasets[0].data = [];
             myChart.data.datasets[0].label = `Number of ${dataType[0].toUpperCase()}${dataType.slice(1)} Cases Per Country`;
             myChart.data.labels = [];
             CountriesArray.forEach(country => {
                 if (country) {
-                    countriesData.push(country)
-                    myChart.data.datasets[0].data.push(country[dataType])
-                    myChart.data.labels.push(country.name)
+                    countriesData.push(country);
+                    myChart.data.datasets[0].data.push(country[dataType]);
+                    myChart.data.labels.push(country.name);
                 }
             })
             myChart.update();
@@ -133,7 +132,7 @@ async function prepareDataToChart(preparedCountriesData, dataType = 'none') {
 
 
 async function getRegion(continent) {
-    countriesOfContinent = []
+    countriesOfContinent = [];
     let data = await (await fetch(`https://intense-mesa-62220.herokuapp.com/https://restcountries.herokuapp.com/api/v1/region/${continent}`)).json()
     data.forEach(country => {
 
@@ -143,7 +142,7 @@ async function getRegion(continent) {
         })
     });
 
-    addCountriesOfContinent(countriesOfContinent)
+    addCountriesOfContinent(countriesOfContinent);
     return getCoronaByContinent(countriesOfContinent);
 }
 async function addCountriesOfContinent(countriesOfContinentArray) {
@@ -155,7 +154,6 @@ async function addCountriesOfContinent(countriesOfContinentArray) {
         }
     }
     asideCountries.appendChild(listOfCountries);
-
 }
 
 const dataTypeNav = document.querySelector(".continent-data-type")
@@ -164,10 +162,9 @@ continentsButtons.forEach(button => {
         console.dir(dataTypeNav)
         if (dataTypeNav.dataset.see === "display-none") {
             e.target.dataset.chosen = true;
-            dataTypeNav.dataset.see = "display"
+            dataTypeNav.dataset.see = "display";
         } else {
-            asideCountries.innerHTML = ''
-            console.log(e)
+            asideCountries.innerHTML = '';
             for (let button of continentsButtons) {
                 button.dataset.chosen = false;
             }
@@ -178,17 +175,14 @@ continentsButtons.forEach(button => {
             mainContent.dataset.see = "display-none";
         }
         getRegion(button.classList.value)
-
     })
 });
 
 continentsDataTypeButtons.forEach(button => {
     button.addEventListener("click", (e) => {
         if (mainContent.dataset.see === "display-none") {
-            console.log(mainContent)
-            console.dir(e.target)
             e.target.dataset["chosen"] = true;
-            mainContent.dataset.see = "display"
+            mainContent.dataset.see = "display";
         } else {
             for (let button of continentsDataTypeButtons) {
                 button.dataset.chosen = false;
@@ -196,38 +190,35 @@ continentsDataTypeButtons.forEach(button => {
             e.target.dataset["chosen"] = true;
 
         }
-        prepareDataToChart(countriesPromises, e.target.className)
+        prepareDataToChart(countriesPromises, e.target.className);
     })
 })
 let InfoBox = document.createElement("div");
 sideBarCountries.addEventListener("mouseover", (e) => {
-    InfoBox.classList.remove("fade-out")
+    InfoBox.classList.remove("fade-out");
     InfoBox.innerHTML = '';
-    console.dir(e.path[0].textContent)
+    console.dir(e.path[0].textContent);
     let countryInfo = countriesData.filter((country) => {
-        return (country.name == e.path[0].textContent)
+        return (country.name == e.path[0].textContent);
     })
     if (countryInfo.length > 0) {
-        InfoBox.innerHTML += `<p>`
+        InfoBox.innerHTML += `<p>`;
         Object.entries(countryInfo[0]).forEach((element) => {
             if (!element[1]) {
                 element[1] = "0";
             }
-            InfoBox.innerHTML += `<span>${element[0]}</span> : ${element[1]}</br>`
+            InfoBox.innerHTML += `<span>${element[0]}</span> : ${element[1]}</br>`;
         })
-        InfoBox.innerHTML += `</p>`
+        InfoBox.innerHTML += `</p>`;
         InfoBox.classList.add('country-info');
-        mainContent.appendChild(InfoBox)
+        mainContent.appendChild(InfoBox);
     } else {
-        InfoBox.innerHTML += `<p>No Information</p>`
+        InfoBox.innerHTML += `<p>No Information</p>`;
     }
-})
+});
 
 sideBarCountries.addEventListener("mouseout", (e) => {
     if (e.path[0].tagName === "LI") {
-        mainContent.lastChild.classList.add("fade-out")
-        
-        // mainContent.lastChild.innerHTML = '';
-        
+        mainContent.lastChild.classList.add("fade-out");     
     }
-})
+});

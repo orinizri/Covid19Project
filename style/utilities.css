@@ -69,7 +69,7 @@ button[data-chosen='true']:hover {
     height: 100%;
     background: url('/assets/images/loader.png') no-repeat center /cover;
     background-size: 70%;
-    /* animation: spin 5s linear infinite; */
+    animation: spin 5s linear infinite;
 }
 
 @keyframes spin {
