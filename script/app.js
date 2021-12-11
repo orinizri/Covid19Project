@@ -100,7 +100,6 @@ const loaderDiv = document.createElement("div");
 
 
 function getCoronaByContinent(countriesOfContinent) {
-    
     loaderDiv.classList.add("loader");
     loaderContainerDiv.classList.add("loader-container");
     loaderContainerDiv.appendChild(loaderDiv);
@@ -136,13 +135,11 @@ async function getRegion(continent) {
     countriesOfContinent = [];
     let data = await (await fetch(`https://intense-mesa-62220.herokuapp.com/https://restcountries.herokuapp.com/api/v1/region/${continent}`)).json()
     data.forEach(country => {
-
         countriesOfContinent.push({
             name: country.name.common,
             code: country.cca2,
         })
     });
-
     addCountriesOfContinent(countriesOfContinent);
     return getCoronaByContinent(countriesOfContinent);
 }
@@ -168,10 +165,11 @@ continentsContainers.forEach(container => {
         } else {
             asideCountries.innerHTML = '';
             for (let container of continentsContainers) {
-                console.log(container)
+                console.log(container.children[1])
                 container.children[1].dataset.chosen = false;
             }
             for (let container of continentsDataTypeButtons) {
+                console.log(container)
                 container.dataset.chosen = false;
             }
             e.path[0].dataset.chosen = true;
@@ -211,7 +209,8 @@ sideBarCountries.addEventListener("mouseover", (e) => {
             if (!element[1]) {
                 element[1] = "0";
             }
-            InfoBox.innerHTML += `<span>${element[0]}</span> : ${element[1]}</br>`;
+            // ${element[0][0].toUpperCase()}${element[0].slice(1)}
+            InfoBox.innerHTML += `<span>${element[0][0].toUpperCase()}${element[0].slice(1)}</span>: ${element[1]}</br>`;
         })
         InfoBox.innerHTML += `</p>`;
         InfoBox.classList.add('country-info');

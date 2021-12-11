@@ -35,27 +35,31 @@ button[data-chosen='true']:hover {
 }
 
 .country-info {
-    width: 20%;
-    background-color: var(--gray-color2);
+    width: 22%;
+    background-color: var(--gray-color3);
     position: absolute;
     left: 30%;
-    top: 5%;
-    padding: 1rem 3rem;
+    top: 15%;
+    padding: 0.5rem 1rem;
     text-align: center;
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: 500;
-
+    border-radius: 5px;
+    box-sizing: content-box;
+    border: 3px solid #9A5065;
 }
 
-.country-info>span {
-    background-color: var(--gray-color2);
+.country-info > p {
+    background-color: var(--gray-color3);
+    font-weight: 400;
+    width: 100%;
+}
+
+.country-info > span {
+    background-color: var(--gray-color3);
     font-weight: 600;
 }
 
-.country-info>p {
-    background-color: var(--gray-color2);
-    font-weight: 400;
-}
 .loader-container {
     left: 30%;
     top: 10%;
@@ -64,20 +68,11 @@ button[data-chosen='true']:hover {
     position: absolute;
     background-color: transparent;
 }
+
 .loader {
     width: 100%;
     height: 100%;
     background: url('/assets/images/loader.png') no-repeat center /cover;
     background-size: 70%;
     animation: spin 5s linear infinite;
-}
-
-@keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
-
-    100% {
-        transform: rotate(360deg);
-    }
 }
