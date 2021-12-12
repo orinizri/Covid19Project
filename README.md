@@ -39,3 +39,4 @@ In this project, I took statistical information from About-Corona.Net API and or
 - [About-Corona.Net](https://about-corona.net/) - Covid19 Database
 - [hengkiardo](https://github.com/hengkiardo/restcountries) - Continent Database
 - [Chart.js](https://www.chartjs.org/) - Graph Visualizations
+- [The Noun Project](https://thenounproject.com/) - Icons
