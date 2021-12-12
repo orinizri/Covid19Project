@@ -11,7 +11,7 @@
 
 ---
 
-<p align="center"> Few lines describing your project.
+<p align="center">Live statistics and coronavirus news tracking the number of confirmed cases, recovered patients, critically ill, and deaths for each continent and country due to the COVID-19 coronavirus
     <br> 
 </p>
 
