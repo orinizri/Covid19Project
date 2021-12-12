@@ -38,5 +38,4 @@ In this project, I took statistical information from About-Corona.Net API and or
 
 - [About-Corona.Net](https://about-corona.net/) - Covid19 Database
 - [hengkiardo](https://github.com/hengkiardo/restcountries) - Continent Database
-- [VueJs](https://vuejs.org/) - Web Framework
 - [Chart.js](https://www.chartjs.org/) - Graph Visualizations
