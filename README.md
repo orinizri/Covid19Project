@@ -22,7 +22,8 @@
 
 ## 🧐 About <a name = "about"></a>
 
-In this project, I took statistical information from About-Corona.Net API and organize it per continent. The available information for each country is as follows:
+In this project, statistical information was taken from About-Corona.Net API and presented per continenet and country. The information was sorted with Hengkiardo's continents API and presented in graphs using Chart.js.
+The available information for each country is as follows:
 - Confirmed Cases
 - Number of Deaths
 - Number of recovered
